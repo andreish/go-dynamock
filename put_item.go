@@ -53,8 +53,10 @@ func (e *MockDynamoDB) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemO
 
 		// delete first element of expectation
 		e.dynaMock.PutItemExpect = append(e.dynaMock.PutItemExpect[:0], e.dynaMock.PutItemExpect[1:]...)
-
-		return x.output, *x.err
+		if x.err != nil {
+			return x.output, *x.err
+		}
+		return x.output, nil
 	}
 
 	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item Expectation Not Found")
@@ -79,8 +81,10 @@ func (e *MockDynamoDB) PutItemWithContext(ctx aws.Context, input *dynamodb.PutIt
 
 		// delete first element of expectation
 		e.dynaMock.PutItemExpect = append(e.dynaMock.PutItemExpect[:0], e.dynaMock.PutItemExpect[1:]...)
-
-		return x.output, *x.err
+		if x.err != nil {
+			return x.output, *x.err
+		}
+		return x.output, nil
 	}
 
 	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item With Context Expectation Not Found")
