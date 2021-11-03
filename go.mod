@@ -1,4 +1,4 @@
-module github.com/gusaul/go-dynamock
+module github.com/andreish/go-dynamock
 
 go 1.15
 
