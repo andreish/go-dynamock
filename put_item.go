@@ -27,7 +27,7 @@ func (e *PutItemExpectation) WillReturns(res dynamodb.PutItemOutput) *PutItemExp
 	return e
 }
 
-// WillReturns - method for set desired result
+// WillReturnError - method for set desired error result
 func (e *PutItemExpectation) WillReturnError(res dynamodb.PutItemOutput, err *error) *PutItemExpectation {
 	e.output = &res
 	e.err = err

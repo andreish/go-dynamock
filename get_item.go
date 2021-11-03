@@ -27,6 +27,13 @@ func (e *GetItemExpectation) WillReturns(res dynamodb.GetItemOutput) *GetItemExp
 	return e
 }
 
+// WillReturnError - method for set desired error result
+func (e *GetItemExpectation) WillReturnError(res dynamodb.GetItemOutput, err *error) *GetItemExpectation {
+	e.output = &res
+	e.err = err
+	return e
+}
+
 // GetItem - this func will be invoked when test running matching expectation with actual input
 func (e *MockDynamoDB) GetItem(input *dynamodb.GetItemInput) (*dynamodb.GetItemOutput, error) {
 	if len(e.dynaMock.GetItemExpect) > 0 {
@@ -47,6 +54,9 @@ func (e *MockDynamoDB) GetItem(input *dynamodb.GetItemInput) (*dynamodb.GetItemO
 		// delete first element of expectation
 		e.dynaMock.GetItemExpect = append(e.dynaMock.GetItemExpect[:0], e.dynaMock.GetItemExpect[1:]...)
 
+		if x.err != nil {
+			return x.output, *x.err
+		}
 		return x.output, nil
 	}
 
@@ -73,6 +83,9 @@ func (e *MockDynamoDB) GetItemWithContext(ctx aws.Context, input *dynamodb.GetIt
 		// delete first element of expectation
 		e.dynaMock.GetItemExpect = append(e.dynaMock.GetItemExpect[:0], e.dynaMock.GetItemExpect[1:]...)
 
+		if x.err != nil {
+			return x.output, *x.err
+		}
 		return x.output, nil
 	}
 

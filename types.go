@@ -33,6 +33,7 @@ type (
 		table  *string
 		key    map[string]*dynamodb.AttributeValue
 		output *dynamodb.GetItemOutput
+		err    *error
 	}
 
 	// BatchGetItemExpectation struct hold expectation field, err, and result
@@ -47,6 +48,7 @@ type (
 		key              map[string]*dynamodb.AttributeValue
 		table            *string
 		output           *dynamodb.UpdateItemOutput
+		err              *error
 	}
 
 	// PutItemExpectation struct hold expectation field, err, and result
@@ -62,6 +64,7 @@ type (
 		key    map[string]*dynamodb.AttributeValue
 		table  *string
 		output *dynamodb.DeleteItemOutput
+		err    *error
 	}
 
 	// BatchWriteItemExpectation struct hold expectation field, err, and result
