@@ -54,6 +54,7 @@ type (
 		item   map[string]*dynamodb.AttributeValue
 		table  *string
 		output *dynamodb.PutItemOutput
+		err    *error
 	}
 
 	// DeleteItemExpectation struct hold expectation field, err, and result

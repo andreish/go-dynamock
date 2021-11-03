@@ -27,6 +27,13 @@ func (e *PutItemExpectation) WillReturns(res dynamodb.PutItemOutput) *PutItemExp
 	return e
 }
 
+// WillReturns - method for set desired result
+func (e *PutItemExpectation) WillReturnError(res dynamodb.PutItemOutput, err *error) *PutItemExpectation {
+	e.output = &res
+	e.err = err
+	return e
+}
+
 // PutItem - this func will be invoked when test running matching expectation with actual input
 func (e *MockDynamoDB) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {
 	if len(e.dynaMock.PutItemExpect) > 0 {
@@ -47,7 +54,7 @@ func (e *MockDynamoDB) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemO
 		// delete first element of expectation
 		e.dynaMock.PutItemExpect = append(e.dynaMock.PutItemExpect[:0], e.dynaMock.PutItemExpect[1:]...)
 
-		return x.output, nil
+		return x.output, *x.err
 	}
 
 	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item Expectation Not Found")
@@ -73,7 +80,7 @@ func (e *MockDynamoDB) PutItemWithContext(ctx aws.Context, input *dynamodb.PutIt
 		// delete first element of expectation
 		e.dynaMock.PutItemExpect = append(e.dynaMock.PutItemExpect[:0], e.dynaMock.PutItemExpect[1:]...)
 
-		return x.output, nil
+		return x.output, *x.err
 	}
 
 	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item With Context Expectation Not Found")
